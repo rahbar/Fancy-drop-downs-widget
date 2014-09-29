@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chosen Selectors</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="chosen.css">
+        <style>
+            body{
+                margin-top: 5%;
+            }
+            .select{
+                width: 15%; display: inline-block; position: absolute; left: 25%; 
+            }
+            #buttonContainer{
+                position: absolute;
+                left: 25%;
+                
+            }
+            label.error {
+                color: red;
+                font-style: italic; 
+                position: absolute;
+                left: 45%;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <form>
+            <button id="fancyUpButton" type="button" onclick="fancyDDLWidget(), testingFunc()" style="display: inline-block; margin-left: 5%;">Fancy up drop down list</button>
+            <select class="select" data-placeholder="Choose your car ..."  tabindex="-1" id="mySelect">
+                <option value></option>
+                <optgroup label="Honda">
+                    <option value="Accord">Accord</option>
+                    <option value="Civic">Civic</option>
+                    <option value="CR-V">CR-V</option>
+                </optgroup>
+                <optgroup label="Toyota">
+                    <option value="Camry">Camry</option>
+                    <option value="Corolla">Corolla</option>
+                    <option value="Avalon">Avalon</option>
+                </optgroup>
+                <optgroup label="Ford">
+                    <option value="Focus">Focus</option>
+                    <option value="Fusion">Fusion</option>
+                    <option value="Mustang">Mustang</option>
+                </optgroup>
+                <optgroup label="Chevrolet">
+                    <option value="Impala">Impala</option>
+                    <option value="Corvette">Corvette</option>
+                    <option value="Camaro">Camaro</option>
+                </optgroup>
+            </select>
+            </br></br>
+            <div id="buttonContainer"></div>
+        </form>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="chosen.jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        
+        <!-- ****   <<<Fancy Select Drop Down Widget>>> Copy this part into you page to 
+                    turn your regular drop downs into fancy Chosen drop downs.
+                    You need to include jQuery library and jQuery Chosen plug-in in your page.
+        *** -->
+        
+        <script type="text/javascript" id="fancyDDLWidget">
+            (function() {
+                function async_load(){
+                    var s = document.createElement('script');
+                    s.type = 'text/javascript';
+                    s.async = true;
+                    s.innerHTML='function fancyDDLWidget(){$("select").chosen({inherit_select_classes: true});}';
+                    var embedder = document.getElementById('fancyDDLWidget');
+                    embedder.parentNode.insertBefore(s, embedder);
+                }
+                if (window.attachEvent)
+                    window.attachEvent('onload', async_load);
+                else
+                    window.addEventListener('load', async_load, false);
+            })();
+        </script>
+        <!-- *********** End of widget *********** -->
+        
+        <!-- ****** Function to test the widget and its validation. jQuery Validate plug-in is needed. ***** -->
+        <script>
+            
+            function testingFunc() {
+                $("#fancyUpButton").remove();
+                var submitButton='<input type="submit" value="Validate Selectors">';
+                var resetButton='<button id="resetButton" type="button">Reset</button>';
+                $("#buttonContainer").append(submitButton).append(resetButton);
+                $("select").attr("required","").attr("title","Please select a car!");
+                $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+                $("form").validate();
+                $("label.error").insertAfter(".chosen-container");
+                $("#resetButton").click(function(){
+                    $("select").val("");
+                    $("select").trigger("chosen:updated");
+                });
+            }
+        </script>
+        
+        <!-- *********** End of testing function *********** -->
+    </body>
+</html>
